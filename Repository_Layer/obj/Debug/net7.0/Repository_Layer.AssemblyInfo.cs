@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Repository_Layer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ef08be6cedaa6c0228e3041a9c131841e431849")]
 [assembly: System.Reflection.AssemblyProductAttribute("Repository_Layer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Repository_Layer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
