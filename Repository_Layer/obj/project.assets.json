@@ -46,6 +46,15 @@
           }
         }
       },
+      "BCrypt.Net-Next.StrongName/4.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/BCrypt.Net-Next.StrongName.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/BCrypt.Net-Next.StrongName.dll": {}
+        }
+      },
       "Humanizer.Core/2.14.1": {
         "type": "package",
         "compile": {
@@ -1132,6 +1141,16 @@
             "rid": "win"
           }
         }
+      },
+      "Common_Layer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Common_Layer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common_Layer.dll": {}
+        }
       }
     }
   },
@@ -1172,6 +1191,37 @@
         "azureicon.png",
         "lib/netstandard2.0/Azure.Identity.dll",
         "lib/netstandard2.0/Azure.Identity.xml"
+      ]
+    },
+    "BCrypt.Net-Next.StrongName/4.0.3": {
+      "sha512": "Tq/uRu90t6/4p/S1m4gKWudrtq2s4kWDAcoxzW/XPZUvrOfKtmc0oFgjoyJcgqycBl49YlfJCzuYJeZHnStgUg==",
+      "type": "package",
+      "path": "bcrypt.net-next.strongname/4.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bcrypt.net-next.strongname.4.0.3.nupkg.sha512",
+        "bcrypt.net-next.strongname.nuspec",
+        "ico.png",
+        "lib/net20/BCrypt.Net-Next.StrongName.dll",
+        "lib/net20/BCrypt.Net-Next.xml",
+        "lib/net35/BCrypt.Net-Next.StrongName.dll",
+        "lib/net35/BCrypt.Net-Next.xml",
+        "lib/net462/BCrypt.Net-Next.StrongName.dll",
+        "lib/net462/BCrypt.Net-Next.xml",
+        "lib/net472/BCrypt.Net-Next.StrongName.dll",
+        "lib/net472/BCrypt.Net-Next.xml",
+        "lib/net48/BCrypt.Net-Next.StrongName.dll",
+        "lib/net48/BCrypt.Net-Next.xml",
+        "lib/net5.0/BCrypt.Net-Next.StrongName.dll",
+        "lib/net5.0/BCrypt.Net-Next.xml",
+        "lib/net6.0/BCrypt.Net-Next.StrongName.dll",
+        "lib/net6.0/BCrypt.Net-Next.xml",
+        "lib/netstandard2.0/BCrypt.Net-Next.StrongName.dll",
+        "lib/netstandard2.0/BCrypt.Net-Next.xml",
+        "lib/netstandard2.1/BCrypt.Net-Next.StrongName.dll",
+        "lib/netstandard2.1/BCrypt.Net-Next.xml",
+        "readme.md"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -3452,10 +3502,17 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Common_Layer/1.0.0": {
+      "type": "project",
+      "path": "../Common_Layer/Common_Layer.csproj",
+      "msbuildProject": "../Common_Layer/Common_Layer.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "BCrypt.Net-Next.StrongName >= 4.0.3",
+      "Common_Layer >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 7.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.0",
       "Microsoft.EntityFrameworkCore.Relational >= 7.0.0",
@@ -3488,7 +3545,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/prince/Desktop/Locobuzz Training/BookStore BackEnd/Common_Layer/Common_Layer.csproj": {
+              "projectPath": "/Users/prince/Desktop/Locobuzz Training/BookStore BackEnd/Common_Layer/Common_Layer.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -3501,6 +3562,10 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
+          "BCrypt.Net-Next.StrongName": {
+            "target": "Package",
+            "version": "[4.0.3, )"
+          },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "[7.0.0, )"
@@ -3542,7 +3607,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.313/RuntimeIdentifierGraph.json"
       }
     }
   }
