@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "rluwJeOK84fwMg3i+rTS158oWmr0FOCRf3lktVkwtNc5McNYsTLr81BQcv6BgaKO2TjifpR5E9inLz89D2UtaA==",
+  "dgSpecHash": "4XJ+A2/kmRUkUCBWFh/Zc7JkbG9pSqbFGyGQQtZIwjA2awFhz+xm/9pE/YlRCUR5dmrgr0wNOfnDd55hjXdnuw==",
   "success": true,
   "projectFilePath": "/Users/prince/Desktop/Locobuzz Training/BookStore BackEnd/Manager_Layer/Manager_Layer.csproj",
   "expectedPackageFiles": [
     "/Users/prince/.nuget/packages/azure.core/1.24.0/azure.core.1.24.0.nupkg.sha512",
     "/Users/prince/.nuget/packages/azure.identity/1.6.0/azure.identity.1.6.0.nupkg.sha512",
     "/Users/prince/.nuget/packages/bcrypt.net-next.strongname/4.0.3/bcrypt.net-next.strongname.4.0.3.nupkg.sha512",
+    "/Users/prince/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/7.0.0/microsoft.aspnetcore.authentication.jwtbearer.7.0.0.nupkg.sha512",
     "/Users/prince/.nuget/packages/microsoft.bcl.asyncinterfaces/1.1.1/microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "/Users/prince/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
     "/Users/prince/.nuget/packages/microsoft.data.sqlclient/5.0.1/microsoft.data.sqlclient.5.0.1.nupkg.sha512",

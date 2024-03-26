@@ -7,6 +7,7 @@ namespace Manager_Layer.Interfaces
 	public interface IUserManager
 	{
         public Task<UserEntity> UserRegistration(RegisterModel model);
+        public Task<string> UserLogin(LoginModel model);
     }
 }
 

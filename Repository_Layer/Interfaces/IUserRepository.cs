@@ -7,6 +7,7 @@ namespace Repository_Layer.Interfaces
 	public interface IUserRepository
 	{
         public Task<UserEntity> UserRegistration(RegisterModel model);
+        public Task<string> UserLogin(LoginModel model);
 
     }
 }
