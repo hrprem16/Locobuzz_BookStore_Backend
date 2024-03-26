@@ -18,6 +18,10 @@ namespace Manager_Layer.Services
         {
             return await repository.UserRegistration(model);
         }
+        public async Task<string> UserLogin(LoginModel model)
+        {
+            return await repository.UserLogin(model);
+        }
     }
 }
 
