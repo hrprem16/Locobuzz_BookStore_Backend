@@ -12,7 +12,7 @@ using Repository_Layer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(BookStoreContext))]
-    [Migration("20240326102327_initial")]
+    [Migration("20240326115817_initial")]
     partial class initial
     {
         /// <inheritdoc />

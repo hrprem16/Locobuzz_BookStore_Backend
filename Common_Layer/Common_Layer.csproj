@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Response_Model\" />
+    <None Remove="Request_Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Response_Model\" />
+    <Folder Include="Request_Model\" />
+  </ItemGroup>
 </Project>
