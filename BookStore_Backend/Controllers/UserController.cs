@@ -4,6 +4,7 @@ using Common_Layer.Response_Model;
 using Common_Layer.Utility;
 using Manager_Layer.Interfaces;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository_Layer.Entity;
 
@@ -89,11 +90,34 @@ namespace BookStore_Backend.Controllers
                 return BadRequest(new ResModel<bool> { Success = false, Message = ex.Message, Data =false });
             }
 
-           
-
+        }
+        [Authorize]
+        [HttpPost]
+        [Route("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(User.FindFirst("UserId").Value);
+                var response = await userManager.ResetPassword(userId, model);
+                if (response != null)
+                {
+                    return Ok(new ResModel<bool> { Success = true, Message = "Reset Password Successfull", Data = response });
+                }
+                else
+                {
+                    return BadRequest(new ResModel<bool> { Success = true,Message="Reset Password Failed!", Data=response });
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new ResModel<bool> { Success = true, Message = ex.Message, Data = false });
+            }
         }
     }
 }
 
                
+
+           
       

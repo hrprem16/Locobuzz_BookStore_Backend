@@ -101,6 +101,28 @@ namespace Repository_Layer.Services
 
         }
 
+        public async Task<bool> ResetPassword(int userId,ResetPasswordModel model)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user != null)
+            {
+                if (model.NewPassword== model.ConfirmPassword)
+                {
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+                    user.UpdatedAt = DateTime.Now;
+                    context.SaveChanges();
+                    return true;
+                }
+                else{
+                    throw new Exception("Password not matched!");
+                }
+            }
+            else
+            {
+                throw new Exception("User doesn't exist!");
+            }
+        }
+
     }
 }
 
