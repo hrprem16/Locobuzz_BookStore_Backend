@@ -9,9 +9,11 @@
   <ItemGroup>
     <None Remove="Response_Model\" />
     <None Remove="Request_Model\" />
+    <None Remove="Utility\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Response_Model\" />
     <Folder Include="Request_Model\" />
+    <Folder Include="Utility\" />
   </ItemGroup>
 </Project>

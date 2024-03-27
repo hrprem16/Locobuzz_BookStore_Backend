@@ -8,6 +8,7 @@ namespace Repository_Layer.Interfaces
 	{
         public Task<UserEntity> UserRegistration(RegisterModel model);
         public Task<string> UserLogin(LoginModel model);
+        public Task<string> ForgetPassword(ForgetPasswordModel model);
 
     }
 }

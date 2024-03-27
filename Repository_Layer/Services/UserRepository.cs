@@ -44,29 +44,25 @@ namespace Repository_Layer.Services
             }
            
         }
-        private string GenerateToken(string Email, int UserId)
+        private string GenerateToken(UserEntity user)
         {
-            //Defining a Security Key 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
             var claims = new[]
             {
-                new Claim("Email",Email),
-                new Claim("UserId", UserId.ToString())
+                new Claim("Email",user.EmailId),
+                new Claim("Role",user.UserRole),
+                new Claim("UserId",user.userId.ToString())
             };
-            var token = new JwtSecurityToken(
-                config["Jwt:Issuer"],
+
+            var token = new JwtSecurityToken(config["Jwt:Issuer"],
                 config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(2), // Token expiration time
-                signingCredentials: credentials
-            );
+                claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: credentials);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenString = tokenHandler.WriteToken(token);
-
-            return tokenString;
-
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public async Task<string> UserLogin(LoginModel model)
@@ -75,7 +71,7 @@ namespace Repository_Layer.Services
             if (user != null)
             {
                 if (BCrypt.Net.BCrypt.Verify(model.Password, user.Password)){
-                    var token = GenerateToken(user.EmailId, user.userId);
+                    var token = GenerateToken(user);
                     return token;
                 }
                 else
@@ -87,6 +83,22 @@ namespace Repository_Layer.Services
             {
                 throw new Exception("User Not Found");
             }
+        }
+        public async Task<string> ForgetPassword(ForgetPasswordModel model)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.EmailId==model.EmailId);
+            {
+                if (user != null)
+                {
+                    var token=GenerateToken(user);
+                    return token;
+                }
+                else
+                {
+                    throw new Exception($"User with email id {model.EmailId} doesn't exists!");
+                }
+            }
+
         }
 
     }

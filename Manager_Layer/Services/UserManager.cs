@@ -22,6 +22,10 @@ namespace Manager_Layer.Services
         {
             return await repository.UserLogin(model);
         }
+        public async Task<string> ForgetPassword(ForgetPasswordModel model)
+        {
+            return await repository.ForgetPassword(model);
+        }
     }
 }
 

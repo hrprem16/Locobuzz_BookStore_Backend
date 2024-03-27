@@ -1,7 +1,9 @@
 ﻿using System;
 using Common_Layer.Request_Model;
 using Common_Layer.Response_Model;
+using Common_Layer.Utility;
 using Manager_Layer.Interfaces;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Repository_Layer.Entity;
 
@@ -12,10 +14,12 @@ namespace BookStore_Backend.Controllers
     public class UserController:ControllerBase
 	{
         private readonly IUserManager userManager;
+        private readonly IBus bus;
 
-        public UserController(IUserManager userManager)
+        public UserController(IUserManager userManager,IBus bus)
         {
             this.userManager = userManager;
+            this.bus = bus;
         }
         [HttpPost]
         [Route("Reg")]
@@ -60,6 +64,36 @@ namespace BookStore_Backend.Controllers
             }
             
         }
-	}
+        [HttpPost]
+        [Route("ForgetPassword")]
+        public async Task<ActionResult> ForgetPassword(ForgetPasswordModel model)
+        {
+            try
+            {
+                var response = await userManager.ForgetPassword(model);
+                if (response != null)
+                {
+                    Send send = new Send();
+                    string str = send.SendMail(model.EmailId, response);
+                    Uri uri = new Uri("rabbitmq://localhost/BookStoreEmailQueue");
+                    var endpoint = await bus.GetSendEndpoint(uri);
+                    return Ok(new ResModel<bool> { Success = true, Message = "Forget Password Successfull", Data =true });
+                }
+                else
+                {
+                    throw new Exception("Failed to send token");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResModel<bool> { Success = false, Message = ex.Message, Data =false });
+            }
+
+           
+
+        }
+    }
 }
 
+               
+      
