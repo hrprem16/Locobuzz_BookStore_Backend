@@ -40,6 +40,29 @@ namespace BookStore_Backend.Controllers
                 return BadRequest(new ResModel<BookEntity> { Success = false, Message =ex.Message, Data = null });
             }
 		}
+		[Authorize]
+		[HttpPut]
+		[Route("UpdateBook")]
+		public async Task<IActionResult> UpdateBookDetails(int bookId,UpdateBookDetailsModel model)
+		{
+			try
+			{
+				int userId = Convert.ToInt32(User.FindFirst("UserId").Value);
+				var response = await bookManager.UpdateBookDetails(userId, bookId, model);
+				if (response != null)
+				{
+					return Ok(new ResModel<bool> { Success = true, Message = "Update Book Details Successfull", Data = response });
+				}
+				else
+				{
+                    return BadRequest(new ResModel<bool> { Success = false, Message = "Update Book Details UnSuccessfull", Data = response });
+                }
+			}
+			catch (Exception ex)
+			{
+                return Ok(new ResModel<bool> { Success = false, Message =ex.Message, Data = false });
+            }
+		}
 
 	}
 }
