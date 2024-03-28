@@ -18,9 +18,11 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<BookStoreContext>(x => x.UseSqlServer(builder.Configuration["ConnectionStrings:dbconnection"]));
 builder.Services.AddTransient<IUserManager, UserManager>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IBookRepository, BookRepository>();
+builder.Services.AddTransient<IBookManager, BookManager>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-//JWT for token Generation
+//JWT for token Generation //Authentication for Reset Password
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -59,6 +61,7 @@ builder.Services.AddMassTransitHostedService();
 builder.Services.AddEndpointsApiExplorer();
 
 //builder.Services.AddSwaggerGen();
+//Used for adding Authentication Bearer during Swagger Api Execution
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore API", Version = "v1" });

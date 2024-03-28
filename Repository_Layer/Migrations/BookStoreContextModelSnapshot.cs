@@ -22,6 +22,55 @@ namespace RepositoryLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Repository_Layer.Entity.BookEntity", b =>
+                {
+                    b.Property<int>("Book_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Book_id"));
+
+                    b.Property<string>("Book_Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Book_Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Book_Discount_Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Book_Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Book_Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Book_image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Book_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Book_id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("BookTable");
+                });
+
             modelBuilder.Entity("Repository_Layer.Entity.UserEntity", b =>
                 {
                     b.Property<int>("userId")
@@ -59,6 +108,17 @@ namespace RepositoryLayer.Migrations
                     b.HasKey("userId");
 
                     b.ToTable("UserTable");
+                });
+
+            modelBuilder.Entity("Repository_Layer.Entity.BookEntity", b =>
+                {
+                    b.HasOne("Repository_Layer.Entity.UserEntity", "AddedBy")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AddedBy");
                 });
 #pragma warning restore 612, 618
         }
