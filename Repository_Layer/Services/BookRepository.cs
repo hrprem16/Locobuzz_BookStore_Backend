@@ -29,7 +29,11 @@ namespace Repository_Layer.Services
 					book.Book_Description = addBookModel.Book_Description;
 					book.Book_Author = addBookModel.Book_Author;
 					book.Book_image = addBookModel.Book_image;
-					book.Book_Price = addBookModel.Book_Price;
+                    if (addBookModel.Book_Price < 0)
+                    {
+                        throw new ArithmeticException("Price can't be less than zero!");
+                    }
+                    book.Book_Price = addBookModel.Book_Price;
 					book.Book_Discount_Price = addBookModel.Book_Discount_Price;
 					book.Book_Quantity = addBookModel.Book_Quantity;
 					book.CreatedAt = DateTime.Now;
@@ -38,7 +42,7 @@ namespace Repository_Layer.Services
                     await context.SaveChangesAsync();
                     return book;
 				}
-				throw new Exception("User is not Admin!");
+				throw new Exception("User is not an Admin!");
 			}
 			else
 			{
@@ -66,7 +70,7 @@ namespace Repository_Layer.Services
 					}
                     throw new Exception($"Book with {bookId} doesn't exist! ");
 				}
-				throw new Exception("User is not Admin!");
+				throw new Exception("User is not an Admin!");
             }
             else
             {
@@ -74,6 +78,66 @@ namespace Repository_Layer.Services
             }
         }
 
+		public async Task<bool> UpdatePrice(int userId,int bookId,int price)
+		{
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+			if (user != null)
+			{
+                if (user.UserRole == "admin")
+                {
+                    var book = await context.BookTable.FirstOrDefaultAsync(a => a.Book_id == bookId);
+                    if (book != null)
+                    {
+						if (price < 0)
+						{
+							throw new ArithmeticException("Price can't be less than zero!");
+						}
+						book.Book_Price = price;
+                        book.UpdatedAt = DateTime.Now;
+                        context.BookTable.Update(book);
+                        await context.SaveChangesAsync();
+                        return true;
+                    }
+                    throw new Exception($"Book with {bookId} doesn't exist! ");
+                }
+                throw new Exception("User is not an Admin!");
+            }
+            throw new Exception("User doesn't exist!");
+        }
+
+        public async Task<bool> UpdateDiscounPrice(int userId, int bookId, int discountPrice)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user != null)
+            {
+                if (user.UserRole == "admin")
+                {
+                    var book = await context.BookTable.FirstOrDefaultAsync(a => a.Book_id == bookId);
+                    if (book != null)
+                    {
+						if (discountPrice <= book.Book_Price)
+						{
+                            if (discountPrice < 0)
+                            {
+                                throw new ArithmeticException("Discount Price can't be less than zero!");
+                            }
+                            book.Book_Discount_Price = discountPrice;
+                            book.UpdatedAt = DateTime.Now;
+                            context.BookTable.Update(book);
+                            await context.SaveChangesAsync();
+                            return true;
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Discount Price can't greater than original price");
+                        }
+                    }
+                    throw new Exception($"Book with {bookId} doesn't exist! ");
+                }
+                throw new Exception("User is not an Admin!");
+            }
+            throw new Exception("User doesn't exist!");
+        }
     }
 }
 
