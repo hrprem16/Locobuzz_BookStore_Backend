@@ -35,8 +35,8 @@ namespace Repository_Layer.Services
 					book.CreatedAt = DateTime.Now;
 					book.UpdatedAt = DateTime.Now;
 					context.BookTable.Add(book);
-					context.SaveChanges();
-					return book;
+                    await context.SaveChangesAsync();
+                    return book;
 				}
 				throw new Exception("User is not Admin!");
 			}
@@ -45,7 +45,35 @@ namespace Repository_Layer.Services
 				throw new Exception("User doesn't exist!");
 			}
 		}
-	
-	}
+		public async Task<bool> UpdateBookDetails (int userId,int bookId, UpdateBookDetailsModel model)
+        {
+            var user= await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user != null)
+            {
+
+				if (user.UserRole == "admin")
+				{
+					var book = await context.BookTable.FirstOrDefaultAsync(a => a.Book_id == bookId);
+					if (book!=null)
+					{
+						book.Book_name = model.Book_name;
+						book.Book_Description = model.Book_Description;
+						book.Book_Author = model.Book_Author;
+						book.UpdatedAt = DateTime.Now;
+						context.BookTable.Update(book);
+						await context.SaveChangesAsync();
+						return true;	
+					}
+                    throw new Exception($"Book with {bookId} doesn't exist! ");
+				}
+				throw new Exception("User is not Admin!");
+            }
+            else
+            {
+                throw new Exception("User doesn't exist!");
+            }
+        }
+
+    }
 }
 

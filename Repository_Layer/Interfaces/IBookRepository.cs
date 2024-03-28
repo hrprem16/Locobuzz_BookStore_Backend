@@ -8,7 +8,7 @@ namespace Repository_Layer.Interfaces
 	{
 
         public Task<BookEntity> AddBook(int userId, AddBookModel addBookModel);
-        public Task<bool> UpdateBook(int bookId, AddBookModel addBookModel);
+        public Task<bool> UpdateBookDetails(int userId, int bookId, UpdateBookDetailsModel model);
     }
 }
 
