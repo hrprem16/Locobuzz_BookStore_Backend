@@ -49,7 +49,7 @@ namespace BookStore_Backend.Controllers
 			{
 				int userId = Convert.ToInt32(User.FindFirst("UserId").Value);
 				var response = await bookManager.UpdateBookDetails(userId, bookId, model);
-				if (response != null)
+				if (response)
 				{
 					return Ok(new ResModel<bool> { Success = true, Message = "Update Book Details Successfull", Data = response });
 				}
@@ -60,10 +60,61 @@ namespace BookStore_Backend.Controllers
 			}
 			catch (Exception ex)
 			{
-                return Ok(new ResModel<bool> { Success = false, Message =ex.Message, Data = false });
+                return BadRequest(new ResModel<bool> { Success = false, Message =ex.Message, Data = false });
             }
 		}
+		[Authorize]
+		[HttpPut]
+		[Route("updatePrice")]
+		public async Task<IActionResult> UpdateBookPrice(int bookId,int price)
+		{
+			try
+			{
+                int userId = Convert.ToInt32(User.FindFirst("UserId").Value);
+				var response = await bookManager.UpdatePrice(userId, bookId, price);
+				if (response)
+				{
+					return Ok(new ResModel<bool> { Success = true, Message = "Original Price Updated", Data = response });
 
-	}
+                }
+				else
+				{
+                    return BadRequest(new ResModel<bool> { Success = false, Message = "Original Price not Updated", Data = response });
+                }
+				
+			}
+			catch(Exception ex)
+			{
+                return BadRequest(new ResModel<bool> { Success = false, Message =ex.Message, Data = false});
+            }
+		}
+        [Authorize]
+        [HttpPut]
+        [Route("updateDiscountPrice")]
+        public async Task<IActionResult> UpdateDiscountPrice(int bookId, int discountPrice)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(User.FindFirst("UserId").Value);
+                var response = await bookManager.UpdateDiscounPrice(userId, bookId, discountPrice);
+                if (response)
+                {
+                    return Ok(new ResModel<bool> { Success = true, Message = "Discount Price Updated", Data = response });
+
+                }
+                else
+                {
+                    return BadRequest(new ResModel<bool> { Success = false, Message = "Discount Price not Updated", Data = response });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResModel<bool> { Success = false, Message = ex.Message, Data = false });
+            }
+        }
+
+
+    }
 }
 
