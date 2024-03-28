@@ -11,6 +11,7 @@ namespace Repository_Layer.Interfaces
         public Task<bool> UpdateBookDetails(int userId, int bookId, UpdateBookDetailsModel model);
         public Task<bool> UpdatePrice(int userId, int bookId, int price);
         public Task<bool> UpdateDiscounPrice(int userId, int bookId, int discountPrice);
+        public Task<bool> UpdateImage(int userId, int bookId, string imageFilePath);
     }
 }
 

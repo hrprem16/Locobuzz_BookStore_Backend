@@ -113,6 +113,31 @@ namespace BookStore_Backend.Controllers
                 return BadRequest(new ResModel<bool> { Success = false, Message = ex.Message, Data = false });
             }
         }
+        [Authorize]
+        [HttpPut]
+        [Route("updateImage")]
+        public async Task<IActionResult> UpdateImage(int bookId, string image)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(User.FindFirst("UserId").Value);
+                var response = await bookManager.UpdateImage(userId, bookId,image);
+                if (response)
+                {
+                    return Ok(new ResModel<bool> { Success = true, Message = "Image Updated Successfull", Data = response });
+
+                }
+                else
+                {
+                    return BadRequest(new ResModel<bool> { Success = false, Message = "Image is not Updated!", Data = response });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResModel<bool> { Success = false, Message = ex.Message, Data = false });
+            }
+        }
 
 
     }

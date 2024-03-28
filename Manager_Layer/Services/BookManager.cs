@@ -30,6 +30,10 @@ namespace Manager_Layer.Services
 		{
 			return await bookRepository.UpdateDiscounPrice(userId, bookId, discountPrice);
 		}
+        public async Task<bool> UpdateImage(int userId, int bookId, string imageFilePath)
+		{
+			return await bookRepository.UpdateImage(userId, bookId, imageFilePath);
+		}
     }
 }
 

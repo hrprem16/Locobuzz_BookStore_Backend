@@ -1,4 +1,6 @@
 ﻿using System;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Common_Layer.Request_Model;
 using Microsoft.EntityFrameworkCore;
 using Repository_Layer.Context;
@@ -137,6 +139,39 @@ namespace Repository_Layer.Services
                 throw new Exception("User is not an Admin!");
             }
             throw new Exception("User doesn't exist!");
+        }
+
+        public async Task<bool> UpdateImage(int userId,int bookId,string imageFilePath)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user != null)
+            {
+                if (user.UserRole == "admin")
+                {
+                    var book = await context.BookTable.FirstOrDefaultAsync(a => a.Book_id == bookId);
+                    if (book != null)
+                    {
+                        Account account = new Account("dz2emvokk", "734452883777881", "RRlJONvtfnLJZgviiyDH3Lf-ufQ");
+                        Cloudinary cloudinary = new Cloudinary(account);
+                        ImageUploadParams uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription(imageFilePath),
+                            PublicId = book.Book_name
+                        };
+                        ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+                        book.UpdatedAt = DateTime.Now;
+                        book.Book_image = uploadResult.Url.ToString();
+                        await context.SaveChangesAsync();
+                        return true;
+                    }
+                    throw new Exception($"Book with {bookId} doesn't exist! ");
+                }
+                throw new Exception("User is not an Admin!");
+            }
+            else
+            {
+                throw new Exception("User doesn't exist!");
+            }
         }
     }
 }
