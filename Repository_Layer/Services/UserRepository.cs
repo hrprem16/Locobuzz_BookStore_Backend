@@ -33,7 +33,7 @@ namespace Repository_Layer.Services
                 entity.MobileNumber = model.MobileNumber;
                 entity.CreatedAt = DateTime.Now;
                 entity.UpdatedAt = DateTime.Now;
-                entity.UserRole = "user";
+                entity.UserRole = model.UserRole;
                 context.UserTable.Add(entity);
                 await context.SaveChangesAsync();
                 return entity;
