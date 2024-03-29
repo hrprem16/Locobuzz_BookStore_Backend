@@ -12,7 +12,7 @@ using Repository_Layer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(BookStoreContext))]
-    [Migration("20240328113133_initial")]
+    [Migration("20240329180501_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -74,6 +74,32 @@ namespace RepositoryLayer.Migrations
                     b.ToTable("BookTable");
                 });
 
+            modelBuilder.Entity("Repository_Layer.Entity.CartEntity", b =>
+                {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+
+                    b.Property<int>("Book_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("Book_id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("CartTable");
+                });
+
             modelBuilder.Entity("Repository_Layer.Entity.UserEntity", b =>
                 {
                     b.Property<int>("userId")
@@ -122,6 +148,25 @@ namespace RepositoryLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("AddedBy");
+                });
+
+            modelBuilder.Entity("Repository_Layer.Entity.CartEntity", b =>
+                {
+                    b.HasOne("Repository_Layer.Entity.BookEntity", "AddedFor")
+                        .WithMany()
+                        .HasForeignKey("Book_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Repository_Layer.Entity.UserEntity", "AddedBy")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AddedBy");
+
+                    b.Navigation("AddedFor");
                 });
 #pragma warning restore 612, 618
         }
