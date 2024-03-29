@@ -11,6 +11,8 @@ namespace Manager_Layer.Interfaces
         public Task<bool> UpdatePrice(int userId, int bookId, int price);
         public Task<bool> UpdateDiscounPrice(int userId, int bookId, int discountPrice);
         public Task<bool> UpdateImage(int userId, int bookId, string imageFilePath);
+        public Task<bool> UpdateQuantity(int userId, int bookId, int bookQuantity);
+        public Task<bool> DeleteBook(int userId, int bookId);
 
     }
 }

@@ -173,6 +173,52 @@ namespace Repository_Layer.Services
                 throw new Exception("User doesn't exist!");
             }
         }
+        public async Task<bool> UpdateQuantity(int userId,int bookId,int bookQuantity)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user != null)
+            {
+                if (user.UserRole == "admin")
+                {
+                    var book = await context.BookTable.FirstOrDefaultAsync(a => a.Book_id == bookId);
+                    if (book != null)
+                    {
+                        if (bookQuantity < 0)
+                        {
+                            throw new ArithmeticException("Quantity can't be less than zero!");
+                        }
+                        book.Book_Quantity = bookQuantity;
+                        book.UpdatedAt = DateTime.Now;
+                        await context.SaveChangesAsync();
+                        return true;
+                    }
+                    throw new Exception($"Book with {bookId} doesn't exist! ");
+                }
+                throw new Exception("User is not as Admin!");
+            }
+            throw new Exception("User doesn't exist!");
+        }
+        public async Task<bool> DeleteBook(int userId, int bookId)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user != null)
+            {
+                if (user.UserRole == "admin")
+                {
+                    var book = await context.BookTable.FirstOrDefaultAsync(a => a.Book_id == bookId);
+                    if (book != null)
+                    {
+                        context.BookTable.Remove(book);
+                        await context.SaveChangesAsync();
+                        return true;
+                    }
+                    throw new Exception($"Book with {bookId} doesn't exist! ");
+                }
+                throw new Exception("User is not as Admin!");
+            }
+            throw new Exception("User doesn't exist!");
+        }
+
     }
 }
 
