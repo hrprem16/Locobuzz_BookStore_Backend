@@ -219,6 +219,40 @@ namespace Repository_Layer.Services
             throw new Exception("User doesn't exist!");
         }
 
+        public async Task<List<BookEntity>> GetAllBooks(int userId)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user.UserRole == "admin")
+            {
+                var books = await context.BookTable.Where(a => a.userId == userId).ToListAsync();
+                if (books != null)
+                {
+                    return books;
+                }
+                throw new Exception("Books Unavailable!");
+            }
+            else
+            {
+                var booklist = await context.BookTable.ToListAsync();
+                if (booklist != null)
+                {
+                    return booklist;
+                }
+                throw new Exception("Books Unavailable!");
+            }
+        }
+
+        public async Task<List<BookEntity>> GetAllBooks()
+        {   
+            var booklist = await context.BookTable.ToListAsync();
+            if (booklist != null)
+            {
+                return booklist;
+            }
+            throw new Exception("Books Unavailable!");
+        }
+
+
     }
 }
 

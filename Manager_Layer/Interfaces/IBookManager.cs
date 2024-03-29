@@ -13,6 +13,8 @@ namespace Manager_Layer.Interfaces
         public Task<bool> UpdateImage(int userId, int bookId, string imageFilePath);
         public Task<bool> UpdateQuantity(int userId, int bookId, int bookQuantity);
         public Task<bool> DeleteBook(int userId, int bookId);
+        public Task<List<BookEntity>> GetAllBooks(int userId);
+        public Task<List<BookEntity>> GetAllBooks();
 
     }
 }
