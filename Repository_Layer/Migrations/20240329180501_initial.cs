@@ -58,15 +58,55 @@ namespace RepositoryLayer.Migrations
                         onDelete: ReferentialAction.NoAction);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CartTable",
+                columns: table => new
+                {
+                    CartId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    userId = table.Column<int>(type: "int", nullable: false),
+                    Bookid = table.Column<int>(name: "Book_id", type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartTable", x => x.CartId);
+                    table.ForeignKey(
+                        name: "FK_CartTable_BookTable_Book_id",
+                        column: x => x.Bookid,
+                        principalTable: "BookTable",
+                        principalColumn: "Book_id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_CartTable_UserTable_userId",
+                        column: x => x.userId,
+                        principalTable: "UserTable",
+                        principalColumn: "userId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_BookTable_userId",
                 table: "BookTable",
+                column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartTable_Book_id",
+                table: "CartTable",
+                column: "Book_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartTable_userId",
+                table: "CartTable",
                 column: "userId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CartTable");
+
             migrationBuilder.DropTable(
                 name: "BookTable");
 
