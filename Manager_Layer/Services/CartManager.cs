@@ -17,6 +17,20 @@ namespace Manager_Layer.Services
         {
 			return await cartRepository.AddToCart(userId, bookId);
 		}
+        public async Task<bool> RemoveBookfromCart(int userId, int cartId)
+		{
+			return await cartRepository.RemoveBookfromCart(userId, cartId);
+		}
+        public async Task<List<CartEntity>> GetAllCartItems(int userId)
+		{
+			return await cartRepository.GetAllCartItems(userId);
+
+        }
+        public async Task<int> UpdateQuantity(int userId, int bookId, int quantity)
+		{
+			return await cartRepository.UpdateQuantity(userId, bookId, quantity);
+
+        }
 
     }
 }
