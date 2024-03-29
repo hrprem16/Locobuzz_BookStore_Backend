@@ -22,6 +22,8 @@ builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<IBookManager, BookManager>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<ICartManager, CartManager>();
+builder.Services.AddTransient<IWishlistRepository, WishlistRepository>();
+builder.Services.AddTransient<IWishlistManager, WishlistManager>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 //JWT for token Generation //Authentication for Reset Password
