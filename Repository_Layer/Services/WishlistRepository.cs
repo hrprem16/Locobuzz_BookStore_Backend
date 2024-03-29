@@ -54,6 +54,20 @@ namespace Repository_Layer.Services
             }
             throw new Exception("Admin can't remove items from wishlist!");
         }
+        public async Task<List<WishlistEntity>> GetAllBookFromWishlist(int userId)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user.UserRole != "admin")
+            {
+                var entity = await context.WishlistTable.Where(a=>a.userId==userId).ToListAsync();
+                if (entity != null)
+                {
+                    return entity;
+                }
+                throw new Exception("Wishlist is empty!");
+            }
+            throw new Exception("Admin can't see wishlist!");
+        }
 
     }
 }

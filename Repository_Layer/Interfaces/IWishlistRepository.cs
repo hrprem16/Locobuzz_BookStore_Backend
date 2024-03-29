@@ -7,6 +7,7 @@ namespace Repository_Layer.Interfaces
 	{
         public Task<WishlistEntity> AddToWishList(int userId, int bookId);
         public Task<WishlistEntity> RemoveBookFromWishlist(int userId, int wishlistId);
+        public Task<List<WishlistEntity>> GetAllBookFromWishlist(int userId);
 
     }
 }
