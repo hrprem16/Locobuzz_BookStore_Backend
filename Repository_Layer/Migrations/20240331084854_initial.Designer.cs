@@ -12,8 +12,8 @@ using Repository_Layer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(BookStoreContext))]
-    [Migration("20240329205930_initial2")]
-    partial class initial2
+    [Migration("20240331084854_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,6 +84,12 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<int>("Book_id")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsPurchase")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("OrderAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -194,7 +200,7 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("Repository_Layer.Entity.WishlistEntity", b =>
                 {
-                    b.HasOne("Repository_Layer.Entity.UserEntity", "WishlistFor")
+                    b.HasOne("Repository_Layer.Entity.BookEntity", "WishlistFor")
                         .WithMany()
                         .HasForeignKey("Book_id")
                         .OnDelete(DeleteBehavior.NoAction)

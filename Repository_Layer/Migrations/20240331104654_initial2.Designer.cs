@@ -12,8 +12,8 @@ using Repository_Layer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(BookStoreContext))]
-    [Migration("20240329180501_initial")]
-    partial class initial
+    [Migration("20240331104654_initial2")]
+    partial class initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,48 @@ namespace RepositoryLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Repository_Layer.Entity.AddressEntity", b =>
+                {
+                    b.Property<int>("Address_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Address_Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LandMark")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Address_Id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("AddressTable");
+                });
 
             modelBuilder.Entity("Repository_Layer.Entity.BookEntity", b =>
                 {
@@ -85,6 +127,12 @@ namespace RepositoryLayer.Migrations
                     b.Property<int>("Book_id")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsPurchase")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("OrderAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -139,6 +187,40 @@ namespace RepositoryLayer.Migrations
                     b.ToTable("UserTable");
                 });
 
+            modelBuilder.Entity("Repository_Layer.Entity.WishlistEntity", b =>
+                {
+                    b.Property<int>("Wishlist_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Wishlist_Id"));
+
+                    b.Property<int>("Book_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Wishlist_Id");
+
+                    b.HasIndex("Book_id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("WishlistTable");
+                });
+
+            modelBuilder.Entity("Repository_Layer.Entity.AddressEntity", b =>
+                {
+                    b.HasOne("Repository_Layer.Entity.UserEntity", "AddressBy")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AddressBy");
+                });
+
             modelBuilder.Entity("Repository_Layer.Entity.BookEntity", b =>
                 {
                     b.HasOne("Repository_Layer.Entity.UserEntity", "AddedBy")
@@ -167,6 +249,25 @@ namespace RepositoryLayer.Migrations
                     b.Navigation("AddedBy");
 
                     b.Navigation("AddedFor");
+                });
+
+            modelBuilder.Entity("Repository_Layer.Entity.WishlistEntity", b =>
+                {
+                    b.HasOne("Repository_Layer.Entity.BookEntity", "WishlistFor")
+                        .WithMany()
+                        .HasForeignKey("Book_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Repository_Layer.Entity.UserEntity", "WishlistBy")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("WishlistBy");
+
+                    b.Navigation("WishlistFor");
                 });
 #pragma warning restore 612, 618
         }
