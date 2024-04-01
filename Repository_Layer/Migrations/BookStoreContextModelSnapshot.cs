@@ -22,6 +22,48 @@ namespace RepositoryLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Repository_Layer.Entity.AddressEntity", b =>
+                {
+                    b.Property<int>("Address_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Address_Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LandMark")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Address_Id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("AddressTable");
+                });
+
             modelBuilder.Entity("Repository_Layer.Entity.BookEntity", b =>
                 {
                     b.Property<int>("Book_id")
@@ -81,6 +123,12 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<int>("Book_id")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsPurchase")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("OrderAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -159,6 +207,17 @@ namespace RepositoryLayer.Migrations
                     b.ToTable("WishlistTable");
                 });
 
+            modelBuilder.Entity("Repository_Layer.Entity.AddressEntity", b =>
+                {
+                    b.HasOne("Repository_Layer.Entity.UserEntity", "AddressBy")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AddressBy");
+                });
+
             modelBuilder.Entity("Repository_Layer.Entity.BookEntity", b =>
                 {
                     b.HasOne("Repository_Layer.Entity.UserEntity", "AddedBy")
@@ -191,7 +250,7 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("Repository_Layer.Entity.WishlistEntity", b =>
                 {
-                    b.HasOne("Repository_Layer.Entity.UserEntity", "WishlistFor")
+                    b.HasOne("Repository_Layer.Entity.BookEntity", "WishlistFor")
                         .WithMany()
                         .HasForeignKey("Book_id")
                         .OnDelete(DeleteBehavior.Cascade)

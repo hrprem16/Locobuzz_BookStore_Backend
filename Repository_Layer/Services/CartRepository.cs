@@ -9,7 +9,6 @@ namespace Repository_Layer.Services
 	public class CartRepository:ICartRepository
 	{
 		private readonly BookStoreContext context;
-
 		public CartRepository(BookStoreContext context)
 		{
 			this.context = context;
@@ -24,7 +23,8 @@ namespace Repository_Layer.Services
                     var book = await context.BookTable.FirstOrDefaultAsync(a => a.Book_id == bookId);
                     if (book != null)
                     {
-                        if(await context.CartTable.FirstOrDefaultAsync(a => a.userId == userId && a.Book_id == bookId) == null)
+                        var bookinCart = await context.CartTable.FirstOrDefaultAsync(a => a.userId == userId && a.Book_id == bookId);
+                        if (bookinCart==null)
                         {
                             CartEntity cart = new CartEntity();
                             cart.AddedBy = user;
@@ -32,14 +32,20 @@ namespace Repository_Layer.Services
                             cart.userId = user.userId;
                             cart.Book_id = book.Book_id;
                             cart.Quantity = 1;
-
+                            cart.IsPurchase = false;
+                            cart.OrderAt = null;
                             context.CartTable.Add(cart);
                             await context.SaveChangesAsync();
                             return cart;
                         }
-                        throw new Exception("Book Already added in the cart");
+                        else
+                        {
+                            bookinCart.Quantity++;
+                            await context.SaveChangesAsync();
+                            return bookinCart;
+                        }
                     }
-                    throw new Exception($"book having book id{bookId} it not available!");
+                    throw new Exception($"book having book id { bookId} it not available!");
                 }
                 throw new Exception("Admin can't add item to cart");
 			}
@@ -74,6 +80,7 @@ namespace Repository_Layer.Services
             }
             throw new Exception("Admin can't see the items inside carts");
         }
+
         public async Task<int> UpdateQuantity(int userId,int bookId,int quantity)
         {
             var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
@@ -92,6 +99,74 @@ namespace Repository_Layer.Services
             }
             throw new Exception("Admin can't make changes!");
         }
+
+        public async Task<bool> Increase_Decrease(int userId,int book_Id,bool increase)
+        {
+            var user = await context.UserTable.FirstOrDefaultAsync(a => a.userId == userId);
+            if (user == null)
+            {
+                throw new Exception($"User with {userId} doesn't exists!");
+            }
+            var book = await context.BookTable.FirstOrDefaultAsync(a => a.Book_id == book_Id);
+            if (book == null)
+            {
+                throw new Exception($"Book with {book_Id} doesn't exists!");
+            }
+            var bookInCart = await context.CartTable.FirstOrDefaultAsync(a => a.Book_id == book_Id);
+            if (bookInCart == null)
+            {
+                throw new Exception("Book doesn't exists in cart");
+            }
+                if (increase)
+                {
+                    bookInCart.Quantity++;
+                }
+                else
+                {
+                    if (bookInCart.Quantity == 1)
+                    {
+                        throw new Exception("Use the remove options now as quantity is 1");
+                    }
+                    bookInCart.Quantity--;
+                }
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<int> GetTotalPriceofItems(int userId)
+        {
+            try
+            {
+                
+                var list = await GetAllCartItems(userId);
+                int sum = 0;
+                foreach (var item in list)
+                {
+                    var book = await context.BookTable.FirstOrDefaultAsync(a =>a.Book_id==item.Book_id);
+                    sum = sum + item.Quantity * book.Book_Discount_Price;
+                }
+                return sum;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> PurchaseItem(int userId, bool paymentDone)
+        {
+            if (!paymentDone)
+            {
+                throw new Exception("Payment not Received!");
+            }
+            var list = await GetAllCartItems(userId);
+            foreach (var item in list)
+            {
+                item.IsPurchase = true;
+            }
+            return true;
+        }
+        
 	} 
 }
 

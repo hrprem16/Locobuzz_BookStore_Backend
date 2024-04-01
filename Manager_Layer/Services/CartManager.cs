@@ -31,6 +31,18 @@ namespace Manager_Layer.Services
 			return await cartRepository.UpdateQuantity(userId, bookId, quantity);
 
         }
+        public async Task<bool> Increase_Decrease(int userId, int book_Id, bool increase)
+		{
+			return await cartRepository.Increase_Decrease(userId, book_Id, increase);
+		}
+        public async Task<int> GetTotalPriceofItems(int userId)
+		{
+			return await cartRepository.GetTotalPriceofItems(userId);
+		}
+        public async Task<bool> PurchaseItem(int userId, bool paymentDone)
+		{
+			return await cartRepository.PurchaseItem(userId, paymentDone);
+		}
 
     }
 }

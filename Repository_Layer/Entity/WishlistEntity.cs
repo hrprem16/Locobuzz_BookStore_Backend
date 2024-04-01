@@ -19,7 +19,7 @@ namespace Repository_Layer.Entity
         [ForeignKey("WishlistFor")]
 		public int Book_id { get; set; }
 		[JsonIgnore]
-        public virtual UserEntity WishlistFor { get; set; }
+        public virtual BookEntity WishlistFor { get; set; }
 
     }
 }

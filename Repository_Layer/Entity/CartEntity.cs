@@ -12,6 +12,8 @@ namespace Repository_Layer.Entity
         public int CartId { get; set; }
 
         public int Quantity { get; set; }
+        public bool IsPurchase { get; set; }
+        public DateTime? OrderAt { get; set; }
 
         [ForeignKey("AddedBy")]
         public int userId { get; set; }

@@ -65,6 +65,8 @@ namespace RepositoryLayer.Migrations
                     CartId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    IsPurchase = table.Column<bool>(type: "bit", nullable: false),
+                    OrderAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     userId = table.Column<int>(type: "int", nullable: false),
                     Bookid = table.Column<int>(name: "Book_id", type: "int", nullable: false)
                 },
@@ -85,6 +87,32 @@ namespace RepositoryLayer.Migrations
                         onDelete: ReferentialAction.NoAction);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WishlistTable",
+                columns: table => new
+                {
+                    WishlistId = table.Column<int>(name: "Wishlist_Id", type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userId = table.Column<int>(type: "int", nullable: false),
+                    Bookid = table.Column<int>(name: "Book_id", type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WishlistTable", x => x.WishlistId);
+                    table.ForeignKey(
+                        name: "FK_WishlistTable_BookTable_Book_id",
+                        column: x => x.Bookid,
+                        principalTable: "BookTable",
+                        principalColumn: "Book_id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_WishlistTable_UserTable_userId",
+                        column: x => x.userId,
+                        principalTable: "UserTable",
+                        principalColumn: "userId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_BookTable_userId",
                 table: "BookTable",
@@ -99,6 +127,16 @@ namespace RepositoryLayer.Migrations
                 name: "IX_CartTable_userId",
                 table: "CartTable",
                 column: "userId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WishlistTable_Book_id",
+                table: "WishlistTable",
+                column: "Book_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WishlistTable_userId",
+                table: "WishlistTable",
+                column: "userId");
         }
 
         /// <inheritdoc />
@@ -106,6 +144,9 @@ namespace RepositoryLayer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CartTable");
+
+            migrationBuilder.DropTable(
+                name: "WishlistTable");
 
             migrationBuilder.DropTable(
                 name: "BookTable");
